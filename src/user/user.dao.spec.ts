@@ -1,19 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
 import { UserDAO } from './user.dao';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('UserDAO', () => {
+  let dao: UserDAO;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, UserDAO],
+      providers: [UserDAO],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    dao = module.get<UserDAO>(UserDAO);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(dao).toBeDefined();
   });
 });

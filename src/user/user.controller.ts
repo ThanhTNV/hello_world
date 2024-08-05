@@ -23,9 +23,14 @@ export class UserController {
   }
 
   @Post('login')
-  login(@Body() body: {username: string; password: string}) {
+  async login(@Body() body: {username: string; password: string}) {
     const { username, password } = body;
-    return this.userService.login(username, password);
+    const userId: string = await this.userService.login(username, password);
+    if(userId) {
+      return {message: 'Login successful', userId};
+    } else {
+      return {message: 'Invalid username or password'};
+    }
   }
 
   @Patch(':id')

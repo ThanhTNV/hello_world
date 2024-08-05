@@ -7,5 +7,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     name: string;
 
     @IsInt()
-    age: number;
+    yob: number;
 }

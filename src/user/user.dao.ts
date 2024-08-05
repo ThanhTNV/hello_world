@@ -5,28 +5,34 @@
 //// database and perform the necessary operations on the User entity.
 
 import { Injectable } from '@nestjs/common';
+import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserDAO {
-  private users = [];
+  private users: User[] = [
+    {
+      id: 1,
+      username: 'user1',
+      password: 'password123',
+      email: 'test123@mailtome.com',
+      name: 'John Doe',
+      yob: 30,
+    },
+  ];
   create(createUserDto: CreateUserDto) {
     const user = { id: Date.now(), ...createUserDto };
     this.users.push(user);
     return user;
   }
 
-  findAll() {
+  findAll(): User[] {
     return this.users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  login(username: string, password: string) {
-    return `This action logs in a user with username: ${username} and password: ${password}`;
+  findOne(id: number): User {
+    return this.users.find((user) => user.id === id);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
