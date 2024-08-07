@@ -27,8 +27,14 @@ export class UserDAO {
     return user;
   }
 
-  findAll(): User[] {
+  findAll(): any[] {
     return this.users;
+  }
+
+  findUser(username: string, password: string): User {
+    return this.users.find(
+      (user) => user.username === username && user.password === password,
+    );
   }
 
   findOne(id: number): User {

@@ -2,18 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDAO } from './user.dao';
-import { log } from 'console';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userDAO: UserDAO) {}
+  constructor(private userDAO: UserDAO) {}
 
   sigin(createUserDto: CreateUserDto) {
     return this.userDAO.create(createUserDto);
   }
 
   findAll() {
-    return this.userDAO.findAll();
+    const users = this.userDAO.findAll();
+    const returnUsers = users.map((user) => {
+      const { password, ...rest } = user;
+      return rest;
+    });
+    return returnUsers;
   }
 
   findOne(id: number) {
@@ -24,14 +28,11 @@ export class UserService {
     const _username = username;
     const _password = password;
     try {
-      const users = await this.userDAO.findAll();
-      const user = users.find(
-        (user) => user.username === _username && user.password === _password,
-      );
-      if (user) {
-        return user.id.toString();
+      const user = await this.userDAO.findUser(_username, _password);
+      if (!user) {
+        throw new Error('User not found');
       }
-      return '';
+      return user.id.toString();
     } catch (error) {
       console.log(error);
       throw new Error('Error in login');
